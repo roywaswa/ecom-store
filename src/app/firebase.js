@@ -40,8 +40,6 @@ export async function getAllData() {
   })
 }
 
-
-
 export {
   firestore,
   auth,
