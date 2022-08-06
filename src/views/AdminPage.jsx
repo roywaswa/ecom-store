@@ -28,12 +28,12 @@ function AdminPage() {
   }
   if (authState) {
     return (
-      <>
+      <div className='admindash'>
         {addItemModal? <AddItemModal/> : null}
         <div className="searchbar">
           <form action="submit">
-            <label htmlFor="search">Search Catalog</label>
-            <input type="text" id='search' />
+            <label hidden htmlFor="search">Search Catalog</label>
+            <input placeholder='Search Catalog' type="text" id='search' />
           </form>
         </div>
         <div className="additem">
@@ -43,11 +43,11 @@ function AdminPage() {
         </div>
         <div className="productslist">PRODUCT LIST</div>
         <button onClick={() => signOut()}>SIGN OUT</button>
-    </>
+    </div>
     )
   } else {
     return (
-      <>
+      <div className='signin'>
         <h1>SIGN IN</h1>
         <form onSubmit={ev => loginUser(ev)} action="submit" method="post">
           <div className="formfield">
@@ -65,7 +65,7 @@ function AdminPage() {
           setAuthState(user)
           console.log(user);
         }} >SIGN IN WITH GOOGLE</button>
-      </>
+      </div>
     )
   }
 }
@@ -83,8 +83,8 @@ function AddItemModal() {
         <h1>ADD ITEM</h1>
         <form onSubmit={(ev) => {saveNewItem(ev)}} action="submit">
           <div className="formfield">
-            <label htmlFor="title">Title</label>
-            <input value={form.title} onChange={(ev) => {setForm({...form, title: ev.target.value})}} type="text" name="title" id="title" />
+            <label hidden htmlFor="title">Title</label>
+            <input placeholder='Title' value={form.title} onChange={(ev) => {setForm({...form, title: ev.target.value})}} type="text" name="title" id="title" />
           </div>
           <div className="formfield">
             <label htmlFor="thumbnain">Thumbnail</label>
@@ -95,16 +95,16 @@ function AddItemModal() {
             <ReactQuill theme='snow' value={form.description} onChange={(ev) => {setForm({...form, description: ev})}} />
           </div>
           <div className="formfield">
-            <label htmlFor="price">Price</label>
-            <input onChange={(ev) => {setForm({...form, price: ev.target.value})}} value={form.price} type="number" name="price" id="price" />
+            <label hidden htmlFor="price">Price</label>
+            <input placeholder='Price' onChange={(ev) => {setForm({...form, price: ev.target.value})}} value={form.price} type="number" name="price" id="price" />
           </div>
           <div className="formfield">
-            <label htmlFor="inventoryQuantity">Quantity</label>
-            <input onChange={(ev) => {setForm({...form,inventoryQuantity: ev.target.value})}} value={form.inventoryQuantity} type="number" name="inventoryQuantity" id="inventoryQuantity" />
+            <label hidden htmlFor="inventoryQuantity">Quantity</label>
+            <input placeholder='Quantity' onChange={(ev) => {setForm({...form,inventoryQuantity: ev.target.value})}} value={form.inventoryQuantity} type="number" name="inventoryQuantity" id="inventoryQuantity" />
           </div>
           <div className="formfield">
-            <label htmlFor="category">Category</label>
-            <input onChange={(ev) => {setForm({...form, category: ev.target.value})}} value={form.category} type="text" name="category" id="category" />
+            <label hidden htmlFor="category">Category</label>
+            <input placeholder='Category' onChange={(ev) => {setForm({...form, category: ev.target.value})}} value={form.category} type="text" name="category" id="category" />
           </div>
           <button type="submit">SAVE ITEM</button>
         </form>
