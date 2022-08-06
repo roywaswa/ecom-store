@@ -1,0 +1,16 @@
+footer {
+  background-color: #f5f5f5;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  nav {
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+  }
+}
