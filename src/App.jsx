@@ -1,9 +1,34 @@
-import React from 'react'
+import React,{useState, useMemo} from 'react'
+import { Routes, Route } from "react-router-dom";
+import Header from './components/Header'
+import Footer from './components/Footer'
+import AdminPage from './views/AdminPage'
+import HomePage from './views/HomePage'
+import ProductsPage from './views/ProductsPage'
+import Dashboard from './views/Dashboard'
+import { AuthContext } from './contexts/AuthContext';
+import { onAuthStateChanged } from 'firebase/auth';
+import { auth } from './app/firebase';
 
 function App() {
+  const [authState, setAuthState] = useState()
+  const providerAuthValue = useMemo(() => ({authState,setAuthState}), [authState, setAuthState])
+  onAuthStateChanged(auth, (user) => {
+    setAuthState(user)
+  })
   return (
-    <div className="App">
-    </div>
+    <AuthContext.Provider value={providerAuthValue}>
+      <Header />
+      <main>
+        <Routes>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/products" element={<ProductsPage />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+        </Routes>
+      </main>
+      <Footer/>
+    </AuthContext.Provider>
   )
 }
 

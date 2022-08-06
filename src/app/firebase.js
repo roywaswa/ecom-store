@@ -1,5 +1,15 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, connectAuthEmulator } from "firebase/auth";
+import {
+  getAuth,
+  connectAuthEmulator,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+  GoogleAuthProvider,
+  signInWithPopup,
+  setPersistence,
+  browserLocalPersistence,
+} from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator, getDocs } from "firebase/firestore";
 import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
@@ -20,12 +30,12 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+  setPersistence(auth, browserLocalPersistence)
 const firestore = getFirestore(app);
 const functions = getFunctions(app);
 const storage = getStorage(app);
 
 if (development) {
-  console.log('FIREBASE: Connecting to Firestore emulator');
   connectAuthEmulator(auth, "http://localhost:9099");
   connectFirestoreEmulator(firestore, "localhost", 8080);
   connectFunctionsEmulator(functions, "localhost", 5001);
@@ -33,11 +43,40 @@ if (development) {
 }
 
 
-export async function getAllData() {
-  const query = await getDocs(firestore, "users");
-  query.forEach(doc => {
-    console.log(doc.data());
-  })
+export async function createNewAdminUser(email, password) {
+  try {
+    const newAdmin = await createUserWithEmailAndPassword(auth, email, password)
+    return newAdmin.user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function signInAdminUser(email, password) {
+  try {
+    const admin = await signInWithEmailAndPassword(auth, email, password);
+    return admin.user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function signInWithGoogle() { 
+  const googleProvider = new GoogleAuthProvider();
+  try {
+    const googleUser = await signInWithPopup(auth, googleProvider);
+    return googleUser.user;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export async function signOutAdminUser() {
+  try {
+    await signOut(auth);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 export {
