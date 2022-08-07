@@ -1,9 +1,10 @@
 import { onAuthStateChanged } from 'firebase/auth'
+import { onSnapshot } from 'firebase/firestore'
 import React, { useContext, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { auth, createNewAdminUser, signInAdminUser, signInWithGoogle, signOutAdminUser } from '../app/firebase'
-import { createNewInventoryItem } from '../app/firestoreMethods'
+import { createNewInventoryItem, getInventoryItems, inventoryCollection } from '../app/firestoreMethods'
 import { useStorage } from '../app/storageMethods'
 import { AuthContext } from '../contexts/AuthContext'
 
@@ -36,7 +37,7 @@ export default function AdminPage() {
             setAddItemModal(true)
           }} >ADD ITEM</button>
         </div>
-        <div className="productslist">PRODUCT LIST</div>
+        <ProductsList/>
         <button onClick={() => signOut()}>SIGN OUT</button>
     </div>
     )
@@ -146,3 +147,53 @@ function SignInAdmin() {
     </div>
   )
 }
+
+function ProductsList() {
+  const [products, setProducts] = useState([])
+  let items = []
+  // collect snapshots from firebase
+  useEffect(() => { 
+    const unsubscribe = onSnapshot(inventoryCollection, snapshot => {
+      const products = []
+      snapshot.forEach(doc => {
+        products.push({ ...doc.data(), id: doc.id })
+      })      
+      setProducts(products)
+    }
+    )
+    return () => unsubscribe()
+  }, [])
+  return (
+    <div className="productslist">
+      {products.map(product => {
+        return <ProductCard key={product.id} product={product} />
+      })}
+    </div>
+  )
+}
+
+function ProductCard({product}) {
+  return (
+    <div className="productcard">
+      <div className="product-thumbnail">
+        <img src={product.thumbnailUrl} alt={`thubnail of ${product.title}`} />
+      </div>
+      <div className="product-details">
+        <span className="product-title">
+          { product.title }
+        </span>
+        <span className="product-quantity">
+          Inventory Quantity: { product.quantity }
+        </span>
+        <span className="product-category">
+          { product.category }
+        </span>
+        <span className="product-price">
+          Ksh.{ product.price }
+        </span>
+      </div>
+    </div>
+  )
+}
+
+
