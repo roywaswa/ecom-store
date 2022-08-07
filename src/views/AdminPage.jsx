@@ -1,7 +1,8 @@
-import React, { useContext, useState } from 'react'
+import { onAuthStateChanged } from 'firebase/auth'
+import React, { useContext, useEffect, useState } from 'react'
 import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import { createNewAdminUser, signInAdminUser, signInWithGoogle, signOutAdminUser } from '../app/firebase'
+import { auth, createNewAdminUser, signInAdminUser, signInWithGoogle, signOutAdminUser } from '../app/firebase'
 import { createNewInventoryItem } from '../app/firestoreMethods'
 import { AuthContext } from '../contexts/AuthContext'
 
@@ -19,13 +20,16 @@ function AdminPage() {
     ev.preventDefault()
     // const user = await createNewAdminUser(form.email, form.password)
     const user = await signInAdminUser(form.email, form.password)
-    setAuthState(user)
   }
 
   async function signOut() {
     await signOutAdminUser()
-    setAuthState(null)
   }
+
+  onAuthStateChanged(auth, (user) => {
+    setAuthState(user)
+  })
+
   if (authState) {
     return (
       <div className='admindash'>
