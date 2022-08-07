@@ -33,7 +33,7 @@ function AdminPage() {
   if (authState) {
     return (
       <div className='admindash'>
-        {addItemModal? <AddItemModal/> : null}
+        {addItemModal ? <AddItemModal setAddItemModal={setAddItemModal} /> : null}
         <div className="searchbar">
           <form action="submit">
             <label hidden htmlFor="search">Search Catalog</label>
@@ -74,15 +74,21 @@ function AdminPage() {
   }
 }
 
-function AddItemModal() {
+function AddItemModal({ setAddItemModal }) {
   const [form, setForm] = useState({})
   async function saveNewItem(ev) {
     ev.preventDefault()
     console.log(form);
     const itemID = await createNewInventoryItem(form)
   }
+  function closeModal(ev) {
+    console.log();
+    if(ev.target.className === 'backdrop') {
+      setAddItemModal(false)
+    }
+  }
   return (
-    <div className="backdrop">
+    <div onClick={(ev)=>closeModal(ev)} className="backdrop">
       <div className="container">
         <h1>ADD ITEM</h1>
         <form onSubmit={(ev) => {saveNewItem(ev)}} action="submit">
