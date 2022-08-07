@@ -4,10 +4,9 @@ import ReactQuill from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import { auth, createNewAdminUser, signInAdminUser, signInWithGoogle, signOutAdminUser } from '../app/firebase'
 import { createNewInventoryItem } from '../app/firestoreMethods'
+import { useStorage } from '../app/storageMethods'
 import { AuthContext } from '../contexts/AuthContext'
 
-// TODO: Add authentication with email and password
-// TODO: Protect the admin route
 
 
 function AdminPage() {
@@ -75,7 +74,19 @@ function AdminPage() {
 }
 
 function AddItemModal({ setAddItemModal }) {
-  const [form, setForm] = useState({})
+  const [thubnailFile, setThubnailFile] = useState(null)
+  const {progress, error, url} = useStorage(thubnailFile)
+  const [form, setForm] = useState({
+    title: '',
+    description: '',
+    price: '',
+    thumbnailUrl: '',
+    quantity: '',
+    category: '',
+  })
+  
+
+
   async function saveNewItem(ev) {
     ev.preventDefault()
     console.log(form);
@@ -87,6 +98,8 @@ function AddItemModal({ setAddItemModal }) {
       setAddItemModal(false)
     }
   }
+  useEffect(() => { setForm({...form, thumbnailUrl: url})}, [url])
+  
   return (
     <div onClick={(ev)=>closeModal(ev)} className="backdrop">
       <div className="container">
@@ -105,8 +118,14 @@ function AddItemModal({ setAddItemModal }) {
             <ReactQuill theme='snow' value={form.description} onChange={(ev) => {setForm({...form, description: ev})}} />
           </div>
           <div className="formfield">
-            <label htmlFor="thumbnain">Thumbnail</label>
-            <input value={form.thumbnail} onChange={(ev) => {setForm({...form, thumbnail: ev.target.value})}} type="file" name="thumbnail" id="thumbnail" />
+            <label htmlFor="thumbnail">
+              <span>Thumbnail </span>
+              <span className="material-symbols-outlined">
+                add_circle
+              </span>
+            </label>
+            <input hidden onChange={(ev) => {setThubnailFile(ev.target.files[0]) }} type="file" name="thumbnail" id="thumbnail" />
+            {thubnailFile ? <span>{thubnailFile.name}</span>: <span>No file selected</span>}
           </div>
           <div className="formfield grid-col-span-2">
             <label hidden htmlFor="category">Category</label>
@@ -114,7 +133,7 @@ function AddItemModal({ setAddItemModal }) {
           </div>
           <div className="formfield">
             <label hidden htmlFor="inventoryQuantity">Quantity</label>
-            <input placeholder='Quantity' onChange={(ev) => {setForm({...form,inventoryQuantity: ev.target.value})}} value={form.inventoryQuantity} type="number" name="inventoryQuantity" id="inventoryQuantity" />
+            <input placeholder='Quantity' onChange={(ev) => {setForm({...form,quantity: ev.target.value})}} value={form.inventoryQuantity} type="number" name="inventoryQuantity" id="inventoryQuantity" />
           </div>
           
           <button type="submit">SAVE ITEM</button>
