@@ -18,7 +18,11 @@ export default function AdminPage() {
   }
 
   onAuthStateChanged(auth, (user) => {
-    setAuthState(user)
+    if (user) {
+      user.getIdTokenResult().then((idTokenResult) => {
+        setAuthState({...user, isAdmin: idTokenResult.claims.admin})
+      })
+    }
   })
 
   if (authState) {

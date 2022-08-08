@@ -1,7 +1,6 @@
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  connectAuthEmulator,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
@@ -10,9 +9,9 @@ import {
   setPersistence,
   browserLocalPersistence,
 } from "firebase/auth";
-import { getFirestore, connectFirestoreEmulator, getDocs } from "firebase/firestore";
-import { getFunctions, connectFunctionsEmulator } from "firebase/functions";
-import { getStorage, connectStorageEmulator } from "firebase/storage";
+import { getFirestore } from "firebase/firestore";
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { getStorage } from "firebase/storage";
 
 
 const development = import.meta.env.DEV;
@@ -35,17 +34,13 @@ const firestore = getFirestore(app);
 const functions = getFunctions(app);
 const storage = getStorage(app);
 
-if (development) {
-  connectAuthEmulator(auth, "http://localhost:9099");
-  connectFirestoreEmulator(firestore, "localhost", 8080);
-  connectFunctionsEmulator(functions, "localhost", 5001);
-  connectStorageEmulator(storage, "localhost",9199);
-}
 
+export const addToAdmin = httpsCallable(functions, "addToAdmin")
 
 export async function createNewAdminUser(email, password) {
   try {
     const newAdmin = await createUserWithEmailAndPassword(auth, email, password)
+    addToAdmin()
     return newAdmin.user;
   } catch (error) {
     console.log(error);
