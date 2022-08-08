@@ -2,7 +2,7 @@ import { addDoc, collection, updateDoc, doc, deleteDoc, getDoc, onSnapshot } fro
 import { firestore } from "./firebase";
 
 
-const inventoryCollection = collection(firestore, "inventory");
+export const inventoryCollection = collection(firestore, "inventory");
 
 export async function createNewInventoryItem(item) {
   try {
@@ -13,20 +13,16 @@ export async function createNewInventoryItem(item) {
   }
 }
 
-export async function getInventoryItems() {
-  try {
-    onSnapshot(inventoryCollection, (snapshot) => { 
-      const items = [];
-      snapshot.forEach((doc) => {
-        items.push({
-          id: doc.id,
-          ...doc.data()
-        })
+export function getInventoryItems() {
+  let items = [];
+  onSnapshot(inventoryCollection, (snapshot) => { 
+    snapshot.forEach((doc) => {
+      items.push({
+        id: doc.id,
+        ...doc.data()
       })
     })
-  } catch (error) {
-    console.log(error);
-  }
+  })
 }
 
 export async function getInvetoryItemById(item_id) {
