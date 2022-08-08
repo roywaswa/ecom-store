@@ -1,11 +1,11 @@
-@import './partials/variables';
-@import './partials/mixins';
-@import './partials/mediaqueries';
+@import "./partials/variables";
+@import "./partials/mixins";
+@import "./partials/mediaqueries";
 
-@import './components/Header.scss';
-@import './components/Footer.scss';
+@import "./components/Header.scss";
+@import "./components/Footer.scss";
 
-@import './views/Admin.scss';
+@import "./views/Admin.scss";
 
 /* Box sizing rules */
 *,
@@ -23,8 +23,8 @@
 }
 
 /* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
-ul[role='list'],
-ol[role='list'] {
+ul[role="list"],
+ol[role="list"] {
   list-style: none;
 }
 
@@ -87,5 +87,3 @@ main {
   margin-block: 2rem;
   padding-inline: 2rem;
 }
-
-
