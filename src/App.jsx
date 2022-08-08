@@ -1,16 +1,19 @@
-import React,{useState, useMemo} from 'react'
+import React, { useState, useMemo } from "react";
 import { Routes, Route } from "react-router-dom";
-import Header from './components/Header'
-import Footer from './components/Footer'
-import AdminPage from './views/AdminPage'
-import HomePage from './views/HomePage'
-import ProductsPage from './views/ProductsPage'
-import Dashboard from './views/Dashboard'
-import { AuthContext } from './contexts/AuthContext';
+import Header from "./components/Header";
+import Footer from "./components/Footer";
+import AdminPage from "./views/AdminPage";
+import HomePage from "./views/HomePage";
+import ProductsPage from "./views/ProductsPage";
+import Dashboard from "./views/Dashboard";
+import { AuthContext } from "./contexts/AuthContext";
 
 function App() {
-  const [authState, setAuthState] = useState()
-  const providerAuthValue = useMemo(() => ({authState,setAuthState}), [authState, setAuthState])
+  const [authState, setAuthState] = useState();
+  const providerAuthValue = useMemo(
+    () => ({ authState, setAuthState }),
+    [authState, setAuthState]
+  );
 
   return (
     <AuthContext.Provider value={providerAuthValue}>
@@ -23,9 +26,9 @@ function App() {
           <Route path="/dashboard" element={<Dashboard />} />
         </Routes>
       </main>
-      <Footer/>
+      <Footer />
     </AuthContext.Provider>
-  )
+  );
 }
 
-export default App
+export default App;
