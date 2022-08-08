@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import { AuthContext } from '../contexts/AuthContext'
 
 function Header() {
+  const { authState } = useContext(AuthContext) 
+  const isAdmin = authState && authState.isAdmin
+
   return (
     <header>
       <div className="logo">Kate</div>
@@ -9,7 +13,7 @@ function Header() {
         <Link to='/'>Home</Link>
         <Link to='/products'>Products</Link>
         <Link to='/dashboard'>Account</Link>
-        <Link to='/admin'>Admin</Link>
+        {isAdmin && <Link to='/admin'>Admin</Link>}
       </nav>
     </header>
   )

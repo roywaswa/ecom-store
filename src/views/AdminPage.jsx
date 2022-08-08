@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from 'firebase/auth'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import { auth, signOutAdminUser } from '../app/firebase'
 import { AuthContext } from '../contexts/AuthContext'
 import SignInAdmin from "../components/SignInAdmin";
@@ -20,8 +20,14 @@ export default function AdminPage() {
   onAuthStateChanged(auth, (user) => {
     if (user) {
       user.getIdTokenResult().then((idTokenResult) => {
-        setAuthState({...user, isAdmin: idTokenResult.claims.admin})
+        if (idTokenResult.claims.admin) {
+          setAuthState({...user, isAdmin: idTokenResult.claims.admin})
+        } else {
+          setAuthState(user)
+        }
       })
+    } else {
+      setAuthState(false)
     }
   })
 
@@ -44,7 +50,7 @@ export default function AdminPage() {
         <button onClick={() => signOut()}>SIGN OUT</button>
     </div>
     )
-  } else {
+  } else if(authState === false) {
     return <SignInAdmin/>
   }
 }
