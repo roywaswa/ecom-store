@@ -1,5 +1,5 @@
 import { onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { auth, signOutAdminUser } from "../app/firebase";
 import { AuthContext } from "../contexts/AuthContext";
 import SignInAdmin from "../components/SignInAdmin";

@@ -3,18 +3,17 @@ import {
   signInAdminUser,
   signInWithGoogle,
   createNewAdminUser,
-  addToAdmin,
 } from "../app/firebase";
 
 export default function SignInAdmin() {
   const [form, setForm] = useState({ email: "", password: "" });
 
   async function loginUser() {
-    const user = await signInAdminUser(form.email, form.password);
+    await signInAdminUser(form.email, form.password);
   }
 
   async function signUpAdmin() {
-    const user = await createNewAdminUser(form.email, form.password);
+    await createNewAdminUser(form.email, form.password);
   }
 
   return (

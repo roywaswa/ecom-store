@@ -6,7 +6,7 @@ import { useStorage } from "../app/storageMethods";
 
 export default function AddItemModal({ setAddItemModal }) {
   const [thubnailFile, setThubnailFile] = useState(null);
-  const { progress, error, url } = useStorage(thubnailFile);
+  const { url } = useStorage(thubnailFile);
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -17,8 +17,7 @@ export default function AddItemModal({ setAddItemModal }) {
   });
   async function saveNewItem(ev) {
     ev.preventDefault();
-    console.log(form);
-    const itemID = await createNewInventoryItem(form);
+    await createNewInventoryItem(form);
   }
   function closeModal(ev) {
     console.log();
