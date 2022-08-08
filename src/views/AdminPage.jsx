@@ -62,11 +62,11 @@ function AddItemModal({ setAddItemModal }) {
 
   async function saveNewItem(ev) {
     ev.preventDefault()
-    console.log(form);
+    
     const itemID = await createNewInventoryItem(form)
   }
   function closeModal(ev) {
-    console.log();
+    
     if(ev.target.className === 'backdrop') {
       setAddItemModal(false)
     }
@@ -142,7 +142,7 @@ function SignInAdmin() {
       <button onClick={async () => {
         const user = await signInWithGoogle()
         setAuthState(user)
-        console.log(user);
+        
       }} >SIGN IN WITH GOOGLE</button>
     </div>
   )
