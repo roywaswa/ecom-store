@@ -13,7 +13,6 @@ import { getFirestore } from "firebase/firestore";
 import { getFunctions, httpsCallable } from "firebase/functions";
 import { getStorage } from "firebase/storage";
 
-
 const development = import.meta.env.DEV;
 
 const firebaseConfig = {
@@ -29,18 +28,21 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
-  setPersistence(auth, browserLocalPersistence)
+setPersistence(auth, browserLocalPersistence);
 const firestore = getFirestore(app);
 const functions = getFunctions(app);
 const storage = getStorage(app);
 
-
-export const addToAdmin = httpsCallable(functions, "addToAdmin")
+export const addToAdmin = httpsCallable(functions, "addToAdmin");
 
 export async function createNewAdminUser(email, password) {
   try {
-    const newAdmin = await createUserWithEmailAndPassword(auth, email, password)
-    addToAdmin()
+    const newAdmin = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+    addToAdmin();
     return newAdmin.user;
   } catch (error) {
     console.log(error);
@@ -56,7 +58,7 @@ export async function signInAdminUser(email, password) {
   }
 }
 
-export async function signInWithGoogle() { 
+export async function signInWithGoogle() {
   const googleProvider = new GoogleAuthProvider();
   try {
     const googleUser = await signInWithPopup(auth, googleProvider);
@@ -74,9 +76,4 @@ export async function signOutAdminUser() {
   }
 }
 
-export {
-  firestore,
-  auth,
-  functions,
-  storage,
-}
+export { firestore, auth, functions, storage };

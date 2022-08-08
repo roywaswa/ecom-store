@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export default function ProductCard({ product }) {
   return (
@@ -7,19 +7,13 @@ export default function ProductCard({ product }) {
         <img src={product.thumbnailUrl} alt={`thubnail of ${product.title}`} />
       </div>
       <div className="product-details">
-        <span className="product-title">
-          { product.title }
-        </span>
+        <span className="product-title">{product.title}</span>
         <span className="product-quantity">
-          Inventory Quantity: { product.quantity }
+          Inventory Quantity: {product.quantity}
         </span>
-        <span className="product-category">
-          { product.category }
-        </span>
-        <span className="product-price">
-          Ksh.{ product.price }
-        </span>
+        <span className="product-category">{product.category}</span>
+        <span className="product-price">Ksh.{product.price}</span>
       </div>
     </div>
-  )
+  );
 }
