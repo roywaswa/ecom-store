@@ -1,0 +1,21 @@
+.productcard {
+  width: max(400px, 50%);
+  height: min-content;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  .product-thumbnail {
+    width: 40%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .product-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: baseline;
+  }
+}
