@@ -23,7 +23,7 @@ export function useStorage(file) {
         const percentage = Math.floor(
           (snapshot.bytesTransferred / snapshot.totalBytes) * 100
         );
-        console.log(percentage);
+        
         setProgress(percentage);
       },
       (error) => {
