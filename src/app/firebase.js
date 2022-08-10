@@ -8,10 +8,11 @@ import {
   signInWithPopup,
   setPersistence,
   browserLocalPersistence,
+  connectAuthEmulator
 } from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { getStorage } from "firebase/storage";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
+import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
+import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
@@ -30,6 +31,13 @@ setPersistence(auth, browserLocalPersistence);
 const firestore = getFirestore(app);
 const functions = getFunctions(app);
 const storage = getStorage(app);
+
+if (import.meta.env.DEV) {
+  connectAuthEmulator(auth, 'http://localhost:9099');
+  connectFirestoreEmulator(firestore, 'localhost', 8080);
+  connectFunctionsEmulator(functions, 'localhost', 5001);
+  connectStorageEmulator(storage, 'localhost', 9199);
+}
 
 export const addToAdmin = httpsCallable(functions, "addToAdmin");
 
