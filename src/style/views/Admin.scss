@@ -171,8 +171,19 @@
   grid-column: span 2;
 }
 
+.productslist{
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 1rem;
+  margin: 1rem 0;
+}
 @media screen and (max-width: 768px) {
   .formfield {
     grid-column: span 4;
   }
+  
+  .productslist {
+    grid-template-columns: 1fr;
+  }
 }
+

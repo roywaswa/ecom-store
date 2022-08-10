@@ -88,3 +88,22 @@ main {
   margin-block: 2rem;
   padding-inline: 2rem;
 }
+
+button{
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  background: rgb(99, 99, 255);
+  color: #fff;
+  border: 0;
+  border: 1px solid transparent;
+  outline: 0;
+  border-radius: 8px;
+  transition: all 0.5s ease-in-out;
+
+  &:hover{
+    border: 1px solid #000;
+  }
+  &:active{
+    background-color: darken($color: rgb(99, 99, 255), $amount: 20);
+  }
+}
