@@ -4,11 +4,10 @@ import { auth, signOutAdminUser } from "../app/firebase";
 import { AuthContext } from "../contexts/AuthContext";
 import SignInAdmin from "../components/SignInAdmin";
 import ProductsList from "../components/ProductsList";
-import AddItemModal from "../components/AddItemModal";
 
 export default function AdminPage() {
   const { authState, setAuthState } = useContext(AuthContext);
-  const [addItemModal, setAddItemModal] = useState(false);
+  const [modal, setModal] = useState(false)
 
   async function signOut() {
     await signOutAdminUser();
@@ -31,9 +30,6 @@ export default function AdminPage() {
   if (authState) {
     return (
       <div className="admindash">
-        {addItemModal ? (
-          <AddItemModal setAddItemModal={setAddItemModal} />
-        ) : null}
         <div className="searchbar">
           <form action="submit">
             <label hidden htmlFor="search">
@@ -43,13 +39,6 @@ export default function AdminPage() {
           </form>
         </div>
         <div className="additem">
-          <button
-            onClick={() => {
-              setAddItemModal(true);
-            }}
-          >
-            ADD ITEM
-          </button>
         </div>
         <ProductsList />
         <button onClick={() => signOut()}>SIGN OUT</button>

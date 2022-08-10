@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { createNewInventoryItem } from "../app/firestoreMethods";
 import { useStorage } from "../app/storageMethods";
 
-export default function AddItemModal({ setAddItemModal }) {
+export default function ProductEditor({ setModal }) {
   const [thubnailFile, setThubnailFile] = useState(null);
   const { url } = useStorage(thubnailFile);
   const [form, setForm] = useState({
@@ -15,28 +15,41 @@ export default function AddItemModal({ setAddItemModal }) {
     quantity: "",
     category: "",
   });
-  async function saveNewItem(ev) {
-    ev.preventDefault();
-    await createNewInventoryItem(form);
-  }
-  function closeModal(ev) {
-    
+
+  const handleCloseModal = useCallback((ev) => {
     if (ev.target.className === "backdrop") {
-      setAddItemModal(false);
+      setModal(false);
     }
-  }
+  },[])
+  const handleNewItemSubmit = useCallback((ev) => {
+    ev.preventDefault();
+    createNewInventoryItem(form);
+  },[])
+  
+  const handleChange = useCallback((ev) => {
+    setForm({ ...form, [ev.target.name]: ev.target.value });
+    console.log(form);
+  } ,[form])
+  
+  const handleThumbnailChange = useCallback((ev) => {
+    setThubnailFile(ev.target.files[0]);
+  }, [form])
+  
+  const handleQuillChange = useCallback((ev) => { 
+    setForm({ ...form, description: ev.target.value });
+  }, [form])
+
+  
   useEffect(() => {
     setForm({ ...form, thumbnailUrl: url });
   }, [url]);
 
   return (
-    <div onClick={(ev) => closeModal(ev)} className="backdrop">
+    <div onClick={handleCloseModal} className="backdrop">
       <div className="container">
         <h1>ADD ITEM</h1>
         <form
-          onSubmit={(ev) => {
-            saveNewItem(ev);
-          }}
+          onSubmit={handleNewItemSubmit}
           action="submit"
         >
           <div className="formfield grid-col-span-2">
@@ -46,9 +59,7 @@ export default function AddItemModal({ setAddItemModal }) {
             <input
               placeholder="Title"
               value={form.title}
-              onChange={(ev) => {
-                setForm({ ...form, title: ev.target.value });
-              }}
+              onChange={handleChange}
               type="text"
               name="title"
               id="title"
@@ -60,9 +71,7 @@ export default function AddItemModal({ setAddItemModal }) {
             </label>
             <input
               placeholder="Price"
-              onChange={(ev) => {
-                setForm({ ...form, price: ev.target.value });
-              }}
+              onChange={handleChange}
               value={form.price}
               type="number"
               name="price"
@@ -74,9 +83,7 @@ export default function AddItemModal({ setAddItemModal }) {
             <ReactQuill
               theme="snow"
               value={form.description}
-              onChange={(ev) => {
-                setForm({ ...form, description: ev });
-              }}
+              onChange={handleQuillChange}
             />
           </div>
           <div className="formfield">
@@ -86,9 +93,7 @@ export default function AddItemModal({ setAddItemModal }) {
             </label>
             <input
               hidden
-              onChange={(ev) => {
-                setThubnailFile(ev.target.files[0]);
-              }}
+              onChange={handleThumbnailChange}
               type="file"
               name="thumbnail"
               id="thumbnail"
@@ -105,9 +110,7 @@ export default function AddItemModal({ setAddItemModal }) {
             </label>
             <input
               placeholder="Category"
-              onChange={(ev) => {
-                setForm({ ...form, category: ev.target.value });
-              }}
+              onChange={handleChange}
               value={form.category}
               type="text"
               name="category"
@@ -120,13 +123,11 @@ export default function AddItemModal({ setAddItemModal }) {
             </label>
             <input
               placeholder="Quantity"
-              onChange={(ev) => {
-                setForm({ ...form, quantity: ev.target.value });
-              }}
-              value={form.inventoryQuantity}
+              onChange={handleChange}
+              value={form.quantity}
               type="number"
-              name="inventoryQuantity"
-              id="inventoryQuantity"
+              name="quantity"
+              id="quantity"
             />
           </div>
 

@@ -7,6 +7,7 @@ import HomePage from "./views/HomePage";
 import ProductsPage from "./views/ProductsPage";
 import Dashboard from "./views/Dashboard";
 import { AuthContext } from "./contexts/AuthContext";
+import ProductEditor from "./components/ProductEditor";
 
 function App() {
   const [authState, setAuthState] = useState();
@@ -21,6 +22,7 @@ function App() {
       <main>
         <Routes>
           <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/product" element={<ProductEditor />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/products" element={<ProductsPage />} />
           <Route path="/dashboard" element={<Dashboard />} />

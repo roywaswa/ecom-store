@@ -14,6 +14,7 @@ function Header() {
         <Link to="/products">Products</Link>
         <Link to="/dashboard">Account</Link>
         {isAdmin && <Link to="/admin">Admin</Link>}
+        {isAdmin && <Link to="/admin/product">Add Item</Link>}
       </nav>
     </header>
   );
