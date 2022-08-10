@@ -1,43 +1,32 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { createNewInventoryItem } from "../app/firestoreMethods";
 import { useStorage } from "../app/storageMethods";
 
-export default function ProductEditor({ setModal }) {
+export default function ProductEditor() {
   const [thubnailFile, setThubnailFile] = useState(null);
   const { url } = useStorage(thubnailFile);
-  const [form, setForm] = useState({
-    title: "",
-    description: "",
-    price: "",
-    thumbnailUrl: "",
-    quantity: "",
-    category: "",
-  });
+  const [form, setForm] = useState({ title: "", description: "", price: "", thumbnailUrl: "", quantity: "", category: "" });
 
-  const handleCloseModal = useCallback((ev) => {
-    if (ev.target.className === "backdrop") {
-      setModal(false);
-    }
-  },[])
-  const handleNewItemSubmit = useCallback((ev) => {
+  
+  const handleNewItemSubmit = (ev) => {
     ev.preventDefault();
     createNewInventoryItem(form);
-  },[])
+  }
   
-  const handleChange = useCallback((ev) => {
+  const handleChange = (ev) => {
     setForm({ ...form, [ev.target.name]: ev.target.value });
     console.log(form);
-  } ,[form])
+  }
   
-  const handleThumbnailChange = useCallback((ev) => {
+  const handleThumbnailChange = (ev) => {
     setThubnailFile(ev.target.files[0]);
-  }, [form])
+  }
   
-  const handleQuillChange = useCallback((ev) => { 
+  const handleQuillChange = (ev) => { 
     setForm({ ...form, description: ev.target.value });
-  }, [form])
+  }
 
   
   useEffect(() => {
@@ -45,11 +34,11 @@ export default function ProductEditor({ setModal }) {
   }, [url]);
 
   return (
-    <div onClick={handleCloseModal} className="backdrop">
+    <div onClick={()=>{}} className="backdrop">
       <div className="container">
         <h1>ADD ITEM</h1>
         <form
-          onSubmit={handleNewItemSubmit}
+          onSubmit={ev => handleNewItemSubmit(ev)}
           action="submit"
         >
           <div className="formfield grid-col-span-2">
@@ -59,7 +48,7 @@ export default function ProductEditor({ setModal }) {
             <input
               placeholder="Title"
               value={form.title}
-              onChange={handleChange}
+              onChange={ev =>handleChange(ev)}
               type="text"
               name="title"
               id="title"
@@ -71,7 +60,7 @@ export default function ProductEditor({ setModal }) {
             </label>
             <input
               placeholder="Price"
-              onChange={handleChange}
+              onChange={ev =>handleChange(ev)}
               value={form.price}
               type="number"
               name="price"
@@ -83,7 +72,7 @@ export default function ProductEditor({ setModal }) {
             <ReactQuill
               theme="snow"
               value={form.description}
-              onChange={handleQuillChange}
+              onChange={ev =>handleQuillChange(ev)}
             />
           </div>
           <div className="formfield">
@@ -93,7 +82,7 @@ export default function ProductEditor({ setModal }) {
             </label>
             <input
               hidden
-              onChange={handleThumbnailChange}
+              onChange={ev =>handleThumbnailChange(ev)}
               type="file"
               name="thumbnail"
               id="thumbnail"
@@ -110,7 +99,7 @@ export default function ProductEditor({ setModal }) {
             </label>
             <input
               placeholder="Category"
-              onChange={handleChange}
+              onChange={ev =>handleChange(ev)}
               value={form.category}
               type="text"
               name="category"
@@ -123,7 +112,7 @@ export default function ProductEditor({ setModal }) {
             </label>
             <input
               placeholder="Quantity"
-              onChange={handleChange}
+              onChange={ev => handleChange(ev)}
               value={form.quantity}
               type="number"
               name="quantity"
