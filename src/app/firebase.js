@@ -8,10 +8,14 @@ import {
   signInWithPopup,
   setPersistence,
   browserLocalPersistence,
-  connectAuthEmulator
+  connectAuthEmulator,
 } from "firebase/auth";
 import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
-import { getFunctions, httpsCallable, connectFunctionsEmulator } from "firebase/functions";
+import {
+  getFunctions,
+  httpsCallable,
+  connectFunctionsEmulator,
+} from "firebase/functions";
 import { getStorage, connectStorageEmulator } from "firebase/storage";
 
 const firebaseConfig = {
@@ -33,10 +37,10 @@ const functions = getFunctions(app);
 const storage = getStorage(app);
 
 if (import.meta.env.DEV) {
-  connectAuthEmulator(auth, 'http://localhost:9099');
-  connectFirestoreEmulator(firestore, 'localhost', 8080);
-  connectFunctionsEmulator(functions, 'localhost', 5001);
-  connectStorageEmulator(storage, 'localhost', 9199);
+  connectAuthEmulator(auth, "http://localhost:9099");
+  connectFirestoreEmulator(firestore, "localhost", 8080);
+  connectFunctionsEmulator(functions, "localhost", 5001);
+  connectStorageEmulator(storage, "localhost", 9199);
 }
 
 export const addToAdmin = httpsCallable(functions, "addToAdmin");
