@@ -20,7 +20,6 @@ export default function AddItemModal({ setAddItemModal }) {
     await createNewInventoryItem(form);
   }
   function closeModal(ev) {
-    
     if (ev.target.className === "backdrop") {
       setAddItemModal(false);
     }
